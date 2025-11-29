@@ -1,0 +1,46 @@
+---
+- name: Export users
+  ansible.controller.export:
+    controller_host: "{{ source_aap_hostname }}"
+    controller_password: "{{ source_aap_password }}"
+    controller_username: "{{ source_aap_username }}"
+    validate_certs: "{{ source_aap_validate_certs }}"
+    users: "{{ item }}"
+  loop: "{{ users }}"
+  register: exported_users
+
+- name: Prepare exported users with default password
+  ansible.builtin.set_fact:
+    updated_exported_users: >-
+      {{
+        exported_users.results
+        | map(
+            'combine',
+            {
+              'assets': {
+                'users': [
+                  (
+                    item.assets.users[0]
+                    | combine({'password': new_password})
+                  )
+                ]
+              }
+            },
+            recursive=True
+          )
+        | list
+      }}
+  vars:
+    new_password: "changeme"
+  loop: "{{ exported_users.results }}"
+  loop_control:
+    loop_var: item
+
+- name: Import users
+  ansible.controller.import:
+    controller_host: "{{ target_aap_hostname }}"
+    controller_password: "{{ target_aap_password }}"
+    controller_username: "{{ target_aap_username }}"
+    validate_certs: "{{ target_aap_validate_certs }}"
+    assets: "{{ item.assets }}"
+  loop: "{{ updated_exported_users }}"

@@ -1,0 +1,19 @@
+---
+- name: Export Inventory Sources
+  ansible.controller.export:
+    controller_host: "{{ source_aap_hostname }}"
+    controller_password: "{{ source_aap_password }}"
+    controller_username: "{{ source_aap_username }}"
+    validate_certs: "{{ source_aap_validate_certs }}"
+    inventory_sources: "{{ item }}"
+  loop: "{{ inventory_sources }}"
+  register: exported_inventory_sources
+
+- name: Import Inventory Sources
+  ansible.controller.import:
+    controller_host: "{{ target_aap_hostname }}"
+    controller_password: "{{ target_aap_password }}"
+    controller_username: "{{ target_aap_username }}"
+    validate_certs: "{{ target_aap_validate_certs }}"
+    assets: "{{ item.assets }}"
+  loop: "{{ exported_inventory_sources.results }}"

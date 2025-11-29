@@ -1,0 +1,57 @@
+---
+# tasks file for awx_content_migration
+- name: Move Credential Types
+  ansible.builtin.include_tasks: credential_types.yml
+  when: credential_types is defined and credential_types | length > 0
+
+- name: Move Credentials
+  ansible.builtin.include_tasks: credentials.yml
+  when: credentials is defined and credentials | length > 0
+
+- name: Move Execution Environments
+  ansible.builtin.include_tasks: execution_environments.yml
+  when: execution_environments is defined and execution_environments | length > 0
+
+- name: Move Notification Templates
+  ansible.builtin.include_tasks: notification_templates.yml
+  when: notification_templates is defined and notification_templates | length > 0
+
+- name: Move Organizations
+  ansible.builtin.include_tasks: organizations.yml
+  when: organizations is defined and organizations | length > 0
+
+- name: Move Teams
+  ansible.builtin.include_tasks: teams.yml
+  when: teams is defined and teams | length > 0
+
+- name: Move Inventories
+  ansible.builtin.include_tasks: inventories.yml
+  when: inventories is defined and inventories | length > 0
+
+- name: Move Projects
+  ansible.builtin.include_tasks: projects.yml
+  when: projects is defined and projects | length > 0
+
+- name: Move Inventory Sources
+  ansible.builtin.include_tasks: inventory_sources.yml
+  when: inventory_sources is defined and inventory_sources | length > 0
+
+- name: Move Job Templates
+  ansible.builtin.include_tasks: job_templates.yml
+  when: job_templates is defined and job_templates | length > 0
+
+- name: Move Workflow Job Templates
+  ansible.builtin.include_tasks: workflow_job_templates.yml
+  when: workflow_job_templates is defined and workflow_job_templates | length > 0
+
+- name: Move Schedules
+  ansible.builtin.include_tasks: schedules.yml
+  when: schedules is defined and schedules | length > 0
+
+- name: Move Applications
+  ansible.builtin.include_tasks: applications.yml
+  when: applications is defined and applications | length > 0
+
+- name: Move Users
+  ansible.builtin.include_tasks: users.yml
+  when: users is defined and users | length > 0

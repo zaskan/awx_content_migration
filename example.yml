@@ -1,0 +1,48 @@
+- name: Moving content between AAP instances
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    source_aap_username: "{{ vault_aap_username | default(lookup('env', 'SOURCE_CONTROLLER_USERNAME')) }}"
+    source_aap_password: "{{ vault_aap_password | default(lookup('env', 'SOURCE_CONTROLLER_PASSWORD')) }}"
+    source_aap_hostname: "{{ vault_aap_hostname | default(lookup('env', 'SOURCE_CONTROLLER_HOST')) }}"
+    source_aap_validate_certs: "{{ vault_aap_validate_certs | default(lookup('env', 'SOURCE_CONTROLLER_VERIFY_SSL')) }}"
+    target_aap_username: "{{ vault_aap_username | default(lookup('env', 'TARGET_CONTROLLER_USERNAME')) }}"
+    target_aap_password: "{{ vault_aap_password | default(lookup('env', 'TARGET_CONTROLLER_PASSWORD')) }}"
+    target_aap_hostname: "{{ vault_aap_hostname | default(lookup('env', 'TARGET_CONTROLLER_HOST')) }}"
+    target_aap_validate_certs: "{{ vault_aap_validate_certs | default(lookup('env', 'TARGET_CONTROLLER_VERIFY_SSL')) }}"
+
+    credential_types:
+      - cred_type_1
+    credentials:
+      - "My Quay Credential"
+      - "Ansible Galaxy"
+    execution_environments:
+      - "my-ee"
+    organizations:
+      - Organization3
+    users:
+      - user1
+    teams:
+      - tesm1
+    projects:
+      - "My Project"
+    inventory_sources:
+      - "My Inventory Source"
+    inventories:
+      - "My Sourced Inventory"
+    schedules:
+      - "My Schedule"
+    job_templates:
+      - "My Job Template"
+    workflow_job_templates:
+      - migrate
+    applications:
+      - "My Application"
+    notification_templates:
+      - "notification_template_1"
+
+  tasks:
+    - name: Export Inventories
+      ansible.builtin.include_role:
+        name: awx_content_migration
