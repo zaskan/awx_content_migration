@@ -155,9 +155,7 @@ credentials:
 
   `applications.yml`             Migrates OAuth applications
 
-  `users.yml`                    Migrates users and supports password
-                                 overrides
-  -------------------------------------------------------------------------
+  `users.yml`                    Migrates users and set a default password
 
 ------------------------------------------------------------------------
 
